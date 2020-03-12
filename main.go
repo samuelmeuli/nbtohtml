@@ -20,16 +20,23 @@ type convertCmd struct {
 }
 
 func (r *convertCmd) Run(ctx *context) error {
+	var notebookPath = r.Path
+
 	// Make sure notebook file exists
-	if _, err := os.Stat(r.Path); err != nil {
+	if _, err := os.Stat(notebookPath); err != nil {
 		if os.IsNotExist(err) {
-			return fmt.Errorf("file %s does not exist", r.Path)
+			return fmt.Errorf("file %s does not exist", notebookPath)
 		}
-		return fmt.Errorf("error while checking whether file %s exists", r.Path)
+		return fmt.Errorf("error while checking whether file %s exists", notebookPath)
 	}
 
-	// TODO: Convert
-	fmt.Println("Convert", r.Path)
+	// Convert notebook file to HTML and print result
+	html, err := ConvertFileToHTML(notebookPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(html)
 	return nil
 }
 
