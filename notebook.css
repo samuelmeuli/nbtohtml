@@ -1,0 +1,22 @@
+.jupyter-notebook {
+	box-sizing: border-box;
+	font-size: 16px;
+}
+
+.jupyter-notebook pre {
+	margin: 0;
+	font-size: 14px;
+	font-family: "Menlo", "Consolas", "DejaVu Sans Mono", monospace;
+}
+
+.cell + .cell {
+	margin-top: 20px;
+}
+
+.code-cell,
+.raw-cell {
+	padding: 8px 10px;
+	background: #f5f5f5;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
