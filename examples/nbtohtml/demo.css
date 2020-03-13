@@ -1,0 +1,10 @@
+/* Page styles for the demo page */
+
+body {
+	max-width: 38rem;
+	margin: auto;
+	padding: 2rem;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica", "Arial",
+		sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	line-height: 1.4;
+}
