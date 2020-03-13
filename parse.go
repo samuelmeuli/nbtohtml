@@ -4,42 +4,46 @@ import (
 	"encoding/json"
 )
 
-type output struct {
+// Output is the result of a code cell's execution in a Jupyter Notebook
+type Output struct {
 	Name       string   `json:"name"`
 	OutputType string   `json:"output_type"`
 	Text       []string `json:"text,omitempty"`
 }
 
-type cell struct {
+// Cell is a single Jupyter Notebook cell
+type Cell struct {
 	CellType       string   `json:"cell_type"`
 	ExecutionCount *int     `json:"execution_count,omitempty"`
 	Source         []string `json:"source"`
-	Outputs        []output `json:"outputs,omitempty"`
+	Outputs        []Output `json:"outputs,omitempty"`
 	// Omitted fields: "metadata"
 }
 
-type languageInfo struct {
+// LanguageInfo provides details about the programming language of the Jupyter Notebook kernel
+type LanguageInfo struct {
 	FileExtension string `json:"file_extension"`
 	// Omitted fields: codemirror_mode", "mimetype", "name", "nbconvert_exporter", "pygments_lexer",
 	// "version"
 }
 
-type metadata struct {
-	LanguageInfo languageInfo `json:"language_info"`
+// Metadata contains additional information about the Jupyter Notebook
+type Metadata struct {
+	LanguageInfo LanguageInfo `json:"language_info"`
 	// Omitted fields: "kernelspec"
 }
 
-// Jupyter Notebook JSON data structure
-type notebook struct {
-	Cells    []cell   `json:"cells"`
-	Metadata metadata `json:"metadata"`
+// Notebook represents the JSON data structure in which a Jupyter Notebook is stored
+type Notebook struct {
+	Cells    []Cell   `json:"cells"`
+	Metadata Metadata `json:"metadata"`
 	// Omitted fields: "nbformat", "nbformat_minor"
 }
 
 // parseNotebook takes the provided Jupyter Notebook JSON string and parses it into the
 // corresponding structs.
-func parseNotebook(notebookString string) (notebook, error) {
-	var notebookParsed notebook
+func parseNotebook(notebookString string) (Notebook, error) {
+	var notebookParsed Notebook
 	err := json.Unmarshal([]byte(notebookString), &notebookParsed)
 	return notebookParsed, err
 }

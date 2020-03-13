@@ -48,6 +48,29 @@ func ConvertFileToHTML(notebookPath string) (string, error) {
 	return ConvertStringToHTML(string(fileContent))
 }
 
+// convertMarkdownCellToHTML converts a Markdown cell to HTML with Blackfriday
+func convertMarkdownCellToHTML(cell Cell) string {
+	md := strings.Join(cell.Source, "")
+	mdHTML := blackfriday.Run([]byte(md))
+	return fmt.Sprintf("<div class=\"cell markdown-cell\">%s</div>", string(mdHTML))
+}
+
+// convertCodeCellToHTML converts a code cell to HTML with classes for syntax highlighting using Chroma
+func convertCodeCellToHTML(cell Cell, fileExtension string) (string, error) {
+	codeString := strings.Join(cell.Source, "")
+	codeBuffer := new(bytes.Buffer)
+	err := highlightCode(codeBuffer, codeString, fileExtension)
+	return fmt.Sprintf("<div class=\"cell code-cell\">%s</div>", codeBuffer.String()), err
+}
+
+// convertRawCellToHTML returns a simple HTML element for the raw notebook cell
+func convertRawCellToHTML(cell Cell) string {
+	return fmt.Sprintf(
+		"<div class=\"cell raw-cell\"><pre>%s</pre></div>",
+		strings.Join(cell.Source, ""),
+	)
+}
+
 // ConvertStringToHTML converts the provided Jupyter Notebook JSON string to HTML.
 func ConvertStringToHTML(notebookString string) (string, error) {
 	notebook, err := parseNotebook(notebookString)
@@ -63,26 +86,16 @@ func ConvertStringToHTML(notebookString string) (string, error) {
 	for _, cell := range notebook.Cells {
 		switch cell.CellType {
 		case "markdown":
-			// Markdown cell: Convert to HTML with Blackfriday
-			md := strings.Join(cell.Source, "")
-			mdHTML := blackfriday.Run([]byte(md))
-			htmlString += fmt.Sprintf("<div class=\"cell markdown-cell\">%s</div>", string(mdHTML))
+			htmlString += convertMarkdownCellToHTML(cell)
 		case "code":
-			// Code cell: Convert to HTML for syntax highlighting with Chroma
-			codeString := strings.Join(cell.Source, "")
-			codeBuffer := new(bytes.Buffer)
-			err := highlightCode(codeBuffer, codeString, fileExtension)
+			codeHTMLString, err := convertCodeCellToHTML(cell, fileExtension)
 			if err == nil {
-				htmlString += fmt.Sprintf("<div class=\"cell code-cell\">%s</div>", codeBuffer.String())
+				htmlString += codeHTMLString
 			} else {
 				fmt.Printf("skipping cell (syntax highlighting error: %d)", err)
 			}
 		case "raw":
-			// Raw cell: Create simple HTML string
-			htmlString += fmt.Sprintf(
-				"<div class=\"cell raw-cell\"><pre>%s</pre></div>",
-				strings.Join(cell.Source, ""),
-			)
+			htmlString += convertRawCellToHTML(cell)
 		default:
 			fmt.Printf("skipping cell (unrecognized cell type \"%s\")", cell.CellType)
 		}
