@@ -1,4 +1,4 @@
-module github.com/samuelmeuli/notebook-to-html
+module github.com/samuelmeuli/nbtohtml
 
 go 1.14
 

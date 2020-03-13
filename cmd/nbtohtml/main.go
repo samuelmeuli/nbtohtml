@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/alecthomas/kong"
+	"github.com/samuelmeuli/nbtohtml"
 	"os"
 )
 
@@ -31,7 +32,7 @@ func (r *convertCmd) Run(ctx *context) error {
 	}
 
 	// Convert notebook file to HTML and print result
-	html, err := ConvertFileToHTML(notebookPath)
+	html, err := nbtohtml.ConvertFileToHTML(notebookPath)
 	if err != nil {
 		return err
 	}
