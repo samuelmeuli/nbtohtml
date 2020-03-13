@@ -6,6 +6,8 @@ authors = ["Samuel Meuli <me@samuelmeuli.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+pandas = "^1.0.1"
+matplotlib = "^3.2.0"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^2.0.1"
