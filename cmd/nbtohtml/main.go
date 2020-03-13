@@ -13,8 +13,6 @@ type convertCmd struct {
 var (
 	// Populated by GoReleaser
 	version = "?"
-	commit  = "?"
-	date    = "?"
 
 	description = `
 nbtohtml is a library for converting Jupyter Notebook files to HTML.
@@ -40,7 +38,7 @@ func (r *convertCmd) Run() error {
 
 func main() {
 	ctx := kong.Parse(&cli, kong.Description(description), kong.Vars{
-		"version": fmt.Sprintf("%s-%s-%s", version, commit, date),
+		"version": version,
 	})
 	err := ctx.Run()
 	ctx.FatalIfErrorf(err)
