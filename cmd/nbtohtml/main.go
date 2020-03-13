@@ -4,23 +4,29 @@ import (
 	"fmt"
 	"github.com/alecthomas/kong"
 	"github.com/samuelmeuli/nbtohtml"
-	"os"
 )
 
 type convertCmd struct {
-	Path string `arg name:"path" help:"Jupyter Notebook file to convert" type:"path"`
+	Path string `arg name:"path" help:"Jupyter Notebook file to convert." type:"existingfile"`
 }
+
+var (
+	// Populated by GoReleaser
+	version = "?"
+	commit  = "?"
+	date    = "?"
+
+	description = `
+nbtohtml is a library for converting Jupyter Notebook files to HTML.
+`
+	cli struct {
+		Convert convertCmd       `cmd help:"Convert Jupyter Notebook file to HTML."`
+		Version kong.VersionFlag `help:"Show version."`
+	}
+)
 
 func (r *convertCmd) Run() error {
 	var notebookPath = r.Path
-
-	// Make sure notebook file exists
-	if _, err := os.Stat(notebookPath); err != nil {
-		if os.IsNotExist(err) {
-			return fmt.Errorf("file %s does not exist", notebookPath)
-		}
-		return fmt.Errorf("error while checking whether file %s exists", notebookPath)
-	}
 
 	// Convert notebook file to HTML and print result
 	html, err := nbtohtml.ConvertFileToHTML(notebookPath)
@@ -32,14 +38,10 @@ func (r *convertCmd) Run() error {
 	return nil
 }
 
-var cli struct {
-	Debug bool `help:"Enable debug mode"`
-
-	Convert convertCmd `cmd help:"Convert Jupyter Notebook file to HTML"`
-}
-
 func main() {
-	ctx := kong.Parse(&cli)
+	ctx := kong.Parse(&cli, kong.Description(description), kong.Vars{
+		"version": fmt.Sprintf("%s-%s-%s", version, commit, date),
+	})
 	err := ctx.Run()
 	ctx.FatalIfErrorf(err)
 }
