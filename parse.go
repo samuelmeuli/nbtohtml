@@ -4,11 +4,30 @@ import (
 	"encoding/json"
 )
 
+// Documentation of the Jupyter Notebook JSON format: https://ipython.org/ipython-doc/3/notebook/nbformat.html
+// (VCS: https://github.com/ipython/ipython-doc/blob/e9c83570cf3dea6d7a6b178ee59869b4f441220f/3/notebook/nbformat.html)
+
+// OutputData can contain the cell output in various data types
+// Source: https://github.com/jupyter/nbconvert/blob/c837a22d44d98f6a58d1934bd85af1506df48f21/nbconvert/utils/base.py#L16
+type OutputData struct {
+	TextHTML       []string `json:"text/html,omitempty"`
+	ApplicationPDF *string  `json:"application/pdf,omitempty"`
+	TextLaTeX      *string  `json:"text/latex,omitempty"`
+	ImageSVGXML    []string `json:"image/svg+xml,omitempty"`
+	ImagePNG       *string  `json:"image/png,omitempty"`
+	ImageJPEG      *string  `json:"image/jpeg,omitempty"`
+	TextMarkdown   []string `json:"text/markdown,omitempty"`
+	TextPlain      []string `json:"text/plain,omitempty"`
+}
+
 // Output is the result of a code cell's execution in a Jupyter Notebook
 type Output struct {
-	Name       string   `json:"name"`
-	OutputType string   `json:"output_type"`
-	Text       []string `json:"text,omitempty"`
+	OutputType     string     `json:"output_type"`
+	ExecutionCount *int       `json:"execution_count,omitempty"`
+	Text           []string   `json:"text,omitempty"`
+	Data           OutputData `json:"data,omitempty"`
+	Traceback      []string   `json:"traceback,omitempty"`
+	// Omitted fields: "ename", "evalue", "name"
 }
 
 // Cell is a single Jupyter Notebook cell
