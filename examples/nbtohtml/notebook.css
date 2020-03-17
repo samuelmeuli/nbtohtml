@@ -1,23 +1,79 @@
 .jupyter-notebook {
 	box-sizing: border-box;
-	font-size: 16px;
+	font-size: 14px; /* Source: Jupyter Lab */
 }
 
 .jupyter-notebook pre {
 	margin: 0;
-	font-size: 14px;
-	font-family: "Menlo", "Consolas", "DejaVu Sans Mono", monospace;
+	font-size: 13px; /* Source: Jupyter Lab */
+	font-family: "Menlo", "Consolas", "DejaVu Sans Mono", monospace; /* Source: Jupyter Lab */
 }
 
 .cell + .cell {
 	margin-top: 20px;
 }
 
-.code-cell,
-.raw-cell {
+.output {
+	margin-top: 10px;
+}
+
+.output-error {
+	background: #ffdddd;
+}
+
+/* Boxes */
+.input,
+.raw-cell,
+.output-error {
 	padding: 8px 10px;
+	border-radius: 2px;
 	overflow-y: auto;
+}
+
+.input,
+.raw-cell {
 	background: #f5f5f5;
 	border: 1px solid #e0e0e0;
-	border-radius: 2px;
+}
+
+.jupyter-notebook table {
+	border-collapse: collapse;
+	font-size: 12px; /* Source: Jupyter Lab */
+}
+
+.jupyter-notebook table,
+.jupyter-notebook th,
+.jupyter-notebook td {
+	padding: 4px 6px;
+	border: none;
+}
+
+/* ANSI colors for error output (source: Jupyter Lab) */
+.jupyter-notebook .term-fg30 {
+	/* Black */
+	color: #3e424d;
+}
+.jupyter-notebook .term-fg31 {
+	/* Red */
+	color: #e75c58;
+}
+.jupyter-notebook .term-fg32 {
+	/* Green */
+	color: #00a250;
+}
+.jupyter-notebook .term-fg33 {
+	/* Yellow */
+	color: #ddb62b;
+}
+.jupyter-notebook .term-fg34 {
+	/* Blue */
+	color: #208ffb;
+}
+.jupyter-notebook .term-fg35 {
+	/* Magenta */
+	color: #d160c4;
+}
+.jupyter-notebook .term-fg36 {
+	/* Cyan */
+	color: #60c6c8;
 }

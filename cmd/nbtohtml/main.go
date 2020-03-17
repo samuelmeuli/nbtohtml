@@ -27,12 +27,12 @@ func (r *convertCmd) Run() error {
 	var notebookPath = r.Path
 
 	// Convert notebook file to HTML and print result
-	html, err := nbtohtml.ConvertFileToHTML(notebookPath)
+	notebookHTML, err := nbtohtml.ConvertFileToHTML(notebookPath)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(html)
+	fmt.Println(notebookHTML)
 	return nil
 }
 

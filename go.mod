@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/alecthomas/chroma v0.7.1
 	github.com/alecthomas/kong v0.2.4
+	github.com/buildkite/terminal-to-html v3.2.0+incompatible
 	github.com/dlclark/regexp2 v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
