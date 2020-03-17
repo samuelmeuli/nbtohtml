@@ -1,54 +1,70 @@
 .jupyter-notebook {
 	box-sizing: border-box;
-	font-size: 14px; /* Source: Jupyter Lab */
+}
+
+.jupyter-notebook p,
+.jupyter-notebook ol,
+.jupyter-notebook ul {
+	margin: 0 0 0.8em;
+}
+
+.jupyter-notebook pre,
+.jupyter-notebook table {
+	font-size: 90%;
 }
 
 .jupyter-notebook pre {
 	margin: 0;
-	font-size: 13px; /* Source: Jupyter Lab */
-	font-family: "Menlo", "Consolas", "DejaVu Sans Mono", monospace; /* Source: Jupyter Lab */
+	font-family: "Menlo", "Consolas", "DejaVu Sans Mono", monospace;
 }
 
-.cell + .cell {
+.jupyter-notebook .cell + .cell {
 	margin-top: 20px;
 }
 
-.output {
+.jupyter-notebook .output {
 	margin-top: 10px;
 }
 
-.output-error {
+.jupyter-notebook .output-error {
 	background: #ffdddd;
 }
 
 /* Boxes */
-.input,
-.raw-cell,
-.output-error {
+.jupyter-notebook .input,
+.jupyter-notebook .raw-cell,
+.jupyter-notebook .output-error {
 	padding: 8px 10px;
-	border-radius: 2px;
 	overflow-y: auto;
+	border-radius: 2px;
 }
 
-.input,
-.raw-cell {
+.jupyter-notebook .input,
+.jupyter-notebook .raw-cell {
 	background: #f5f5f5;
 	border: 1px solid #e0e0e0;
 }
 
 .jupyter-notebook table {
 	border-collapse: collapse;
-	font-size: 12px; /* Source: Jupyter Lab */
 }
 
 .jupyter-notebook table,
 .jupyter-notebook th,
 .jupyter-notebook td {
 	padding: 4px 6px;
-	border: none;
+	border: 0;
 }
 
-/* ANSI colors for error output (source: Jupyter Lab) */
+.jupyter-notebook thead tr {
+	border-bottom: 1px solid #bdbdbd;
+}
+
+.jupyter-notebook tbody tr:nth-child(even) {
+	background: #f5f5f5;
+}
+
+/* ANSI colors for error output */
 .jupyter-notebook .term-fg30 {
 	/* Black */
 	color: #3e424d;
