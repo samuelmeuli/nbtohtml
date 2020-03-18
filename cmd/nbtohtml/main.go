@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+
 	"github.com/alecthomas/kong"
 	"github.com/samuelmeuli/nbtohtml"
 )
@@ -27,7 +29,8 @@ func (r *convertCmd) Run() error {
 	var notebookPath = r.Path
 
 	// Convert notebook file to HTML and print result
-	notebookHTML, err := nbtohtml.ConvertFileToHTML(notebookPath)
+	notebookHTML := new(bytes.Buffer)
+	err := nbtohtml.ConvertFile(notebookHTML, notebookPath)
 	if err != nil {
 		return err
 	}

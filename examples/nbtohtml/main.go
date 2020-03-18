@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/samuelmeuli/nbtohtml"
+	"bytes"
 	"html/template"
 	"io"
 	"os"
+
+	"github.com/samuelmeuli/nbtohtml"
 )
 
 const notebookPath = "examples/nbtohtml/sample-notebook.ipynb"
@@ -25,11 +27,12 @@ func checkError(err error) {
 // fillTemplate converts the demo Jupyter Notebook to HTML and injects it into the template page.
 func fillTemplate(writer io.Writer) error {
 	tmpl := template.Must(template.ParseFiles(templatePath))
-	notebookHTML, err := nbtohtml.ConvertFileToHTML(notebookPath)
+	notebookHTML := new(bytes.Buffer)
+	err := nbtohtml.ConvertFile(notebookHTML, notebookPath)
 	if err != nil {
 		return err
 	}
-	templateContent := templateContent{NotebookHTML: template.HTML(notebookHTML)}
+	templateContent := templateContent{NotebookHTML: template.HTML(notebookHTML.String())}
 	return tmpl.Execute(writer, templateContent)
 }
 

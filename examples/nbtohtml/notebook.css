@@ -1,95 +1,152 @@
-.jupyter-notebook {
+/* General styles */
+
+.notebook {
 	box-sizing: border-box;
 }
 
-.jupyter-notebook p,
-.jupyter-notebook ol,
-.jupyter-notebook ul {
+.notebook h1 {
+	margin: 0;
+}
+
+.notebook p,
+.notebook ol,
+.notebook ul {
 	margin: 0 0 0.8em;
 }
 
-.jupyter-notebook pre,
-.jupyter-notebook table {
-	font-size: 90%;
+.notebook pre {
+	margin: 0;
 }
 
-.jupyter-notebook pre {
-	margin: 0;
+.notebook table {
+	border-collapse: collapse;
+}
+
+.notebook table,
+.notebook th,
+.notebook td {
+	padding: 4px 6px;
+	border: 0;
+}
+
+.notebook thead tr {
+	border-bottom: 1px solid #bdbdbd;
+}
+
+.notebook tbody tr:nth-child(even) {
+	background: #f5f5f5;
+}
+
+/* Text */
+
+/* Monospaced text */
+.notebook .input-prompt,
+.notebook .output-prompt,
+.notebook pre {
 	font-family: "Menlo", "Consolas", "DejaVu Sans Mono", monospace;
 }
 
-.jupyter-notebook .cell + .cell {
+/* Small text */
+.notebook .input-prompt,
+.notebook .output-prompt,
+.notebook pre,
+.notebook table {
+	font-size: 90%;
+}
+
+/* Cells */
+
+.notebook .cell + .cell {
 	margin-top: 20px;
 }
 
-.jupyter-notebook .output {
+.notebook .input-wrapper,
+.notebook .output-wrapper {
+	display: flex;
+}
+
+.notebook .input-prompt,
+.notebook .output-prompt {
+	width: 50px;
+}
+
+.notebook .input,
+.notebook .output {
+	flex: 1;
+}
+
+.notebook .output-wrapper {
 	margin-top: 10px;
 }
 
-.jupyter-notebook .output-error {
-	background: #ffdddd;
+/* Prompts (execution counts) */
+
+.notebook .input-prompt,
+.notebook .output-prompt {
+	color: #afafaf;
 }
 
-/* Boxes */
-.jupyter-notebook .input,
-.jupyter-notebook .raw-cell,
-.jupyter-notebook .output-error {
+/* Boxes (e.g. for code and errors) */
+
+.notebook .cell-code .input,
+.notebook .cell-raw .input,
+.notebook .output-error {
 	padding: 8px 10px;
 	overflow-y: auto;
 	border-radius: 2px;
 }
 
-.jupyter-notebook .input,
-.jupyter-notebook .raw-cell {
+/* Grey boxes */
+.notebook .cell-code .input,
+.notebook .cell-raw .input {
 	background: #f5f5f5;
 	border: 1px solid #e0e0e0;
 }
 
-.jupyter-notebook table {
-	border-collapse: collapse;
+/* Adjust spacing of prompts next to boxes (so text is aligned) */
+.notebook .cell-code .input-prompt,
+.notebook .cell-raw .input-prompt {
+	padding-top: 8px;
 }
 
-.jupyter-notebook table,
-.jupyter-notebook th,
-.jupyter-notebook td {
-	padding: 4px 6px;
-	border: 0;
+/* Error output */
+
+/* Error box */
+.notebook .output-error {
+	background: #ffdddd;
 }
 
-.jupyter-notebook thead tr {
-	border-bottom: 1px solid #bdbdbd;
-}
-
-.jupyter-notebook tbody tr:nth-child(even) {
-	background: #f5f5f5;
-}
-
-/* ANSI colors for error output */
-.jupyter-notebook .term-fg30 {
-	/* Black */
+/* Black ANSI color */
+.notebook .term-fg30 {
 	color: #3e424d;
 }
-.jupyter-notebook .term-fg31 {
-	/* Red */
+
+/* Red ANSI color */
+.notebook .term-fg31 {
 	color: #e75c58;
 }
-.jupyter-notebook .term-fg32 {
-	/* Green */
+
+/* Green ANSI color */
+.notebook .term-fg32 {
 	color: #00a250;
 }
-.jupyter-notebook .term-fg33 {
-	/* Yellow */
+
+/* Yellow ANSI color */
+.notebook .term-fg33 {
 	color: #ddb62b;
 }
-.jupyter-notebook .term-fg34 {
-	/* Blue */
+
+/* Blue ANSI color */
+.notebook .term-fg34 {
 	color: #208ffb;
 }
-.jupyter-notebook .term-fg35 {
-	/* Magenta */
+
+/* Magenta ANSI color */
+.notebook .term-fg35 {
 	color: #d160c4;
 }
-.jupyter-notebook .term-fg36 {
-	/* Cyan */
+
+/* Cyan ANSI color */
+.notebook .term-fg36 {
 	color: #60c6c8;
 }

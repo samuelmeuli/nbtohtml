@@ -34,8 +34,9 @@ TODO: Add screenshot
 2. Use the library in your code:
 
 ```go
-var notebookPath := "path/to/your/notebook.ipynb"
-var notebookHTML, err := nbtohtml.ConvertFileToHTML(notebookPath)
+notebookPath := "path/to/your/notebook.ipynb"
+notebookHTML := new(bytes.Buffer)
+err := nbtohtml.ConvertFile(notebookHTML, notebookPath)
 ```
 
 ## Styles
