@@ -44,9 +44,11 @@ func TestConvertDataLaTeXOutput(t *testing.T) {
 }
 
 func TestConvertDataSVGOutput(t *testing.T) {
-	expected := template.HTML(`<svg id="star" xmlns="http://www.w3.org/2000/svg" width="255" height="240" viewBox="0 0 51 48">
+	expected := template.HTML(
+		`<svg id="star" xmlns="http://www.w3.org/2000/svg" width="255" height="240" viewBox="0 0 51 48">
 <path d="M25 1l6 17h18L35 29l5 17-15-10-15 10 5-17L1 18h18z"/>
-</svg>`)
+</svg>`,
+	)
 	actual := convertDataOutput(testDisplayDataSVGOutput)
 	assert.Equal(t, expected, actual)
 }

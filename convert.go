@@ -52,33 +52,33 @@ func renderMarkdown(markdownLines []string) string {
 
 // convertDataOutput converts data output (e.g. a base64-encoded plot image) to HTML.
 func convertDataOutput(output Output) template.HTML {
-	var htmlString string
+	htmlString := ""
 
-	if output.Data.TextHTML != nil {
+	switch {
+	case output.Data.TextHTML != nil:
 		htmlString = strings.Join(output.Data.TextHTML, "")
-	} else if output.Data.ApplicationPDF != nil {
+	case output.Data.ApplicationPDF != nil:
 		// TODO: Implement PDF conversion
 		fmt.Printf("missing conversion logic for `application/pdf` data type\n")
 		htmlString = "<pre>PDF output</pre>"
-	} else if output.Data.TextLaTeX != nil {
+	case output.Data.TextLaTeX != nil:
 		// TODO: Implement LaTeX conversion
 		fmt.Printf("missing conversion logic for `text/latex` data type\n")
 		htmlString = "<pre>LaTeX output</pre>"
-	} else if output.Data.ImageSVGXML != nil {
+	case output.Data.ImageSVGXML != nil:
 		htmlString = strings.Join(output.Data.ImageSVGXML, "")
-	} else if output.Data.ImagePNG != nil {
+	case output.Data.ImagePNG != nil:
 		htmlString = fmt.Sprintf(`<img src="data:image/png;base64,%s">`, *output.Data.ImagePNG)
-	} else if output.Data.ImageJPEG != nil {
+	case output.Data.ImageJPEG != nil:
 		htmlString = fmt.Sprintf(`<img src="data:image/jpeg;base64,%s">`, *output.Data.ImageJPEG)
-	} else if output.Data.TextMarkdown != nil {
+	case output.Data.TextMarkdown != nil:
 		htmlString = renderMarkdown(output.Data.TextMarkdown)
-	} else if output.Data.TextPlain != nil {
+	case output.Data.TextPlain != nil:
 		htmlString = fmt.Sprintf(
 			`<pre>%s</pre>`,
 			html.EscapeString(strings.Join(output.Data.TextPlain, "")),
 		)
-	} else {
-		htmlString = ""
+	default:
 		fmt.Printf("missing `execute_result` data type in output of type `%s`\n", output.OutputType)
 	}
 

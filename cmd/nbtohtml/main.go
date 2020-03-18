@@ -9,7 +9,7 @@ import (
 )
 
 type convertCmd struct {
-	Path string `arg name:"path" help:"Jupyter Notebook file to convert." type:"existingfile"`
+	Path string `kong:"arg,name='path',help='Jupyter Notebook file to convert.',type='existingfile'"`
 }
 
 var (
@@ -20,8 +20,8 @@ var (
 nbtohtml is a library for converting Jupyter Notebook files to HTML.
 `
 	cli struct {
-		Convert convertCmd       `cmd help:"Convert Jupyter Notebook file to HTML."`
-		Version kong.VersionFlag `help:"Show version."`
+		Convert convertCmd       `kong:"cmd,help='Convert Jupyter Notebook file to HTML.'"`
+		Version kong.VersionFlag `kong:"cmd,help='Show version.'"`
 	}
 )
 
