@@ -1,7 +1,31 @@
+/* Variables */
+
+/* Light mode */
+.notebook {
+	--box-background: #f5f5f5;
+	--box-border: #e0e0e0;
+	--notebook-background: #ffffff;
+	--output-error-background: #ffdddd;
+	--prompt-color: #afafaf;
+}
+
+/* Dark mode */
+/* Remove this block if you do not wish to support dark mode */
+@media (prefers-color-scheme: dark) {
+	.notebook {
+		--box-background: #171717;
+		--box-border: #575757;
+		--notebook-background: #2b2b2b;
+		--output-error-background: #3c0404;
+		--prompt-color: #afafaf;
+	}
+}
+
 /* General styles */
 
 .notebook {
 	box-sizing: border-box;
+	background: var(--notebook-background);
 }
 
 .notebook h1 {
@@ -30,11 +54,11 @@
 }
 
 .notebook thead tr {
-	border-bottom: 1px solid #bdbdbd;
+	border-bottom: 1px solid var(--box-border);
 }
 
 .notebook tbody tr:nth-child(even) {
-	background: #f5f5f5;
+	background: var(--box-background);
 }
 
 /* Text */
@@ -83,7 +107,7 @@
 
 .notebook .input-prompt,
 .notebook .output-prompt {
-	color: #afafaf;
+	color: var(--prompt-color);
 }
 
 /* Boxes (e.g. for code and errors) */
@@ -99,8 +123,8 @@
 /* Grey boxes */
 .notebook .cell-code .input,
 .notebook .cell-raw .input {
-	background: #f5f5f5;
-	border: 1px solid #e0e0e0;
+	background: var(--box-background);
+	border: 1px solid var(--box-border);
 }
 
 /* Adjust spacing of prompts next to boxes (so text is aligned) */
@@ -113,7 +137,7 @@
 
 /* Error box */
 .notebook .output-error {
-	background: #ffdddd;
+	background: var(--output-error-background);
 }
 
 /* Black ANSI color */

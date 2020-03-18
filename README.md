@@ -7,6 +7,7 @@
 - Built for server-side rendering (no DOM required)
 - Comes with built-in Markdown rendering and syntax highlighting
 - Implemented in Go for speed and portability
+- Sample styles support light and dark mode
 
 ## Example
 
