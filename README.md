@@ -22,12 +22,12 @@
 #### Pre-compiled
 
 1. Download the latest binary from the [Releases page](https://github.com/samuelmeuli/nbtohtml/releases/latest)
-2. Run `./nbtohtml convert path/to/your/notebook.ipynb` in the directory where you've downloaded the program
+2. Run `./nbtohtml convert /path/to/your/notebook.ipynb` in the directory where you've downloaded the program
 
 #### Self-compiled
 
 1. Compile and install the program by running `go get -u github.com/samuelmeuli/nbtohtml/cmd/nbtohtml`
-2. Run `nbtohtml convert path/to/your/notebook.ipynb`
+2. Run `nbtohtml convert /path/to/your/notebook.ipynb`
 
 ### As a library
 
@@ -35,8 +35,8 @@
 2. Use the library in your code:
 
 ```go
-notebookPath := "path/to/your/notebook.ipynb"
 notebookHTML := new(bytes.Buffer)
+notebookPath := "/path/to/your/notebook.ipynb"
 err := nbtohtml.ConvertFile(notebookHTML, notebookPath)
 ```
 

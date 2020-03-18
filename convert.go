@@ -1,3 +1,4 @@
+// Package nbtohtml is a library for converting Jupyter Notebook files to HTML.
 package nbtohtml
 
 import (
@@ -187,6 +188,12 @@ func convertOutput(output output) template.HTML {
 
 // ConvertFile reads the file at the provided path and converts its content (the Jupyter Notebook
 // JSON) to HTML.
+//
+// For example, the function can be called the following way:
+//
+//  notebookHTML := new(bytes.Buffer)
+//  notebookPath := "/path/to/your/notebook.ipynb"
+//  err := nbtohtml.ConvertFile(notebookHTML, notebookPath)
 func ConvertFile(writer io.Writer, notebookPath string) error {
 	// Read file
 	fileContent, err := ioutil.ReadFile(notebookPath)
@@ -199,6 +206,12 @@ func ConvertFile(writer io.Writer, notebookPath string) error {
 }
 
 // ConvertString converts the provided Jupyter Notebook JSON string to HTML.
+//
+// For example, the function can be called the following way:
+//
+//  notebookHTML := new(bytes.Buffer)
+//  notebookString := `{ "cells": ... }`
+//  err := nbtohtml.ConvertString(notebookHTML, notebookString)
 func ConvertString(writer io.Writer, notebookString string) error {
 	notebook, err := parseNotebook(notebookString)
 	if err != nil {
