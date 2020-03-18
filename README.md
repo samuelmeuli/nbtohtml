@@ -12,7 +12,7 @@
 
 → [Example of a rendered notebook](https://nbtohtml.samuelmeuli.com)
 
-TODO: Add screenshot
+![Screenshot of rendered HTML](./.github/screenshot.png)
 
 ## Usage
 
