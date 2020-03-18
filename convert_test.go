@@ -19,7 +19,7 @@ text
 
 func TestConvertStreamOutputMissingKey(t *testing.T) {
 	expected := template.HTML("")
-	actual := convertStreamOutput(Output{OutputType: "stream"})
+	actual := convertStreamOutput(output{OutputType: "stream"})
 	assert.Equal(t, expected, actual)
 }
 
@@ -90,7 +90,7 @@ data</pre>`)
 
 func TestConvertDataOutputMissingKey(t *testing.T) {
 	expected := template.HTML("")
-	actual := convertDataOutput(Output{OutputType: "display_data"})
+	actual := convertDataOutput(output{OutputType: "display_data"})
 	assert.Equal(t, expected, actual)
 }
 
@@ -103,7 +103,7 @@ With <span class="term-fg31">ANSI colors</span></pre>`)
 
 func TestConvertErrorOutputMissingKey(t *testing.T) {
 	expected := template.HTML("<pre>An unknown error occurred</pre>")
-	actual := convertErrorOutput(Output{OutputType: "error"})
+	actual := convertErrorOutput(output{OutputType: "error"})
 	assert.Equal(t, expected, actual)
 }
 

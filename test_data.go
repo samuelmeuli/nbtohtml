@@ -154,7 +154,7 @@ const testNotebookString = `{
 	]
 }`
 
-var testMarkdownCell = Cell{
+var testMarkdownCell = cell{
 	CellType: "markdown",
 	Source: []string{
 		"# Hello World\n",
@@ -163,9 +163,9 @@ var testMarkdownCell = Cell{
 	},
 }
 
-var testDisplayDataHTMLOutput = Output{
+var testDisplayDataHTMLOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		TextHTML: []string{
 			"<div>\n",
 			"<p>Hello world</p>\n",
@@ -175,24 +175,24 @@ var testDisplayDataHTMLOutput = Output{
 }
 
 var testPDFString = "base64-encoded-pdf-data"
-var testDisplayDataPDFOutput = Output{
+var testDisplayDataPDFOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		ApplicationPDF: &testPDFString,
 	},
 }
 
 var testLaTeXString = "latex-data"
-var testDisplayDataLaTeXOutput = Output{
+var testDisplayDataLaTeXOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		TextLaTeX: &testLaTeXString,
 	},
 }
 
-var testDisplayDataSVGOutput = Output{
+var testDisplayDataSVGOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		ImageSVGXML: []string{
 			"<svg id=\"star\" xmlns=\"http://www.w3.org/2000/svg\" width=\"255\" height=\"240\" viewBox=\"0 0 51 48\">\n",
 			"<path d=\"M25 1l6 17h18L35 29l5 17-15-10-15 10 5-17L1 18h18z\"/>\n",
@@ -202,24 +202,24 @@ var testDisplayDataSVGOutput = Output{
 }
 
 var testPNGString = "base64-encoded-png-data"
-var testDisplayDataPNGOutput = Output{
+var testDisplayDataPNGOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		ImagePNG: &testPNGString,
 	},
 }
 
 var testJPEGString = "base64-encoded-jpeg-data"
-var testDisplayDataJPEGOutput = Output{
+var testDisplayDataJPEGOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		ImageJPEG: &testJPEGString,
 	},
 }
 
-var testDisplayDataMarkdownOutput = Output{
+var testDisplayDataMarkdownOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		TextMarkdown: []string{
 			"# Hello World\n",
 			"\n",
@@ -228,9 +228,9 @@ var testDisplayDataMarkdownOutput = Output{
 	},
 }
 
-var testDisplayDataPlainTextOutput = Output{
+var testDisplayDataPlainTextOutput = output{
 	OutputType: "display_data",
-	Data: OutputData{
+	Data: outputData{
 		TextPlain: []string{
 			"multiline\n",
 			"text\n",
@@ -239,7 +239,7 @@ var testDisplayDataPlainTextOutput = Output{
 	},
 }
 
-var testErrorOutput = Output{
+var testErrorOutput = output{
 	OutputType: "error",
 	Traceback: []string{
 		"Error message",
@@ -247,7 +247,7 @@ var testErrorOutput = Output{
 	},
 }
 
-var testStreamOutput = Output{
+var testStreamOutput = output{
 	OutputType: "stream",
 	Text: []string{
 		"multiline\n",
@@ -257,10 +257,10 @@ var testStreamOutput = Output{
 }
 
 var testExecutionCount1 = 1
-var testExecuteResultOutput = Output{
+var testExecuteResultOutput = output{
 	OutputType:     "execute_result",
 	ExecutionCount: &testExecutionCount1,
-	Data: OutputData{
+	Data: outputData{
 		TextPlain: []string{
 			"multiline\n",
 			"text\n",
@@ -270,14 +270,14 @@ var testExecuteResultOutput = Output{
 }
 
 var testExecutionCount2 = 2
-var testCodeCell = Cell{
+var testCodeCell = cell{
 	CellType:       "code",
 	ExecutionCount: &testExecutionCount2,
 	Source: []string{
 		"print(\"Hello\")\n",
 		"print(\"World\")",
 	},
-	Outputs: []Output{
+	Outputs: []output{
 		testDisplayDataHTMLOutput,
 		testDisplayDataPDFOutput,
 		testDisplayDataLaTeXOutput,
@@ -292,7 +292,7 @@ var testCodeCell = Cell{
 	},
 }
 
-var testRawCell = Cell{
+var testRawCell = cell{
 	CellType: "raw",
 	Source: []string{
 		"This is a raw section, without formatting.\n",
@@ -300,14 +300,14 @@ var testRawCell = Cell{
 	},
 }
 
-var testMetadata = Metadata{
-	LanguageInfo: LanguageInfo{
+var testMetadata = metadata{
+	LanguageInfo: languageInfo{
 		FileExtension: ".py",
 	},
 }
 
-var testParsedNotebook = Notebook{
-	Cells: []Cell{
+var testParsedNotebook = notebook{
+	Cells: []cell{
 		testMarkdownCell,
 		testCodeCell,
 		testRawCell,
