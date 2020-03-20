@@ -72,7 +72,7 @@ const testNotebookString = `{
 					"output_type": "display_data",
 					"data": {
 						"image/svg+xml": [
-							"<svg id=\"star\" xmlns=\"http://www.w3.org/2000/svg\" width=\"255\" height=\"240\" viewBox=\"0 0 51 48\">\n",
+							"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"255\" height=\"240\">\n",
 							"<path d=\"M25 1l6 17h18L35 29l5 17-15-10-15 10 5-17L1 18h18z\"/>\n",
 							"</svg>"
 						]
@@ -194,7 +194,7 @@ var testDisplayDataSVGOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		ImageSVGXML: []string{
-			"<svg id=\"star\" xmlns=\"http://www.w3.org/2000/svg\" width=\"255\" height=\"240\" viewBox=\"0 0 51 48\">\n",
+			"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"255\" height=\"240\">\n",
 			"<path d=\"M25 1l6 17h18L35 29l5 17-15-10-15 10 5-17L1 18h18z\"/>\n",
 			"</svg>",
 		},

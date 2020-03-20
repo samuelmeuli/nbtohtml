@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"io"
 	"io/ioutil"
+	"path/filepath"
 	"strings"
 
 	"github.com/alecthomas/chroma"
@@ -94,7 +95,7 @@ func convertErrorOutput(output output) template.HTML {
 	}
 
 	// Convert ANSI colors to HTML
-	var linesHTML []string
+	linesHTML := []string{}
 	for _, tracebackLine := range output.Traceback {
 		lineHTML := terminal.Render([]byte(tracebackLine))
 		linesHTML = append(linesHTML, string(lineHTML))
@@ -196,7 +197,7 @@ func convertOutput(output output) template.HTML {
 //  err := nbtohtml.ConvertFile(notebookHTML, notebookPath)
 func ConvertFile(writer io.Writer, notebookPath string) error {
 	// Read file
-	fileContent, err := ioutil.ReadFile(notebookPath)
+	fileContent, err := ioutil.ReadFile(filepath.Clean(notebookPath))
 	if err != nil {
 		return fmt.Errorf("could not read Jupyter Notebook file at %s", notebookPath)
 	}
