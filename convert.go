@@ -185,12 +185,19 @@ func ConvertString(writer io.Writer, notebookString string) error {
 		"convertPrompt": convertPrompt,
 		"convertInput":  convertInput,
 		"convertOutput": convertOutput,
+		"getCellClasses": func(cell cell) string {
+			return "cell cell-" + cell.CellType
+		},
+		"getOutputClasses": func(output output) string {
+			outputTypeClass := strings.ReplaceAll(output.OutputType, "_", "-")
+			return "output output-" + outputTypeClass
+		},
 	})
 	t, err = t.Parse(`
 		<div class="notebook">
 			{{ $fileExtension := .fileExtension }}
 			{{ range .notebook.Cells }}
-				<div class="cell cell-{{ .CellType }}">
+				<div class="{{ . | getCellClasses }}">
 					<div class="input-wrapper">
 						<div class="input-prompt">
 							{{ .ExecutionCount | convertPrompt }}
@@ -204,7 +211,7 @@ func ConvertString(writer io.Writer, notebookString string) error {
 							<div class="output-prompt">
 								{{ .ExecutionCount | convertPrompt }}
 							</div>
-							<div class="output output-{{ .OutputType }}">
+							<div class="{{ . | getOutputClasses }}">
 								{{ . | convertOutput }}
 							</div>
 						</div>
