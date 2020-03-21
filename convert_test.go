@@ -1,3 +1,4 @@
+// nolint:gosec
 package nbtohtml
 
 import (
@@ -17,74 +18,102 @@ text
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertStreamOutputMissingKey(t *testing.T) {
-	expected := template.HTML("")
-	actual := convertStreamOutput(output{OutputType: "stream"})
+func TestConvertStreamOutputCodeInjection(t *testing.T) {
+	expected := template.HTML(`<pre>multiline
+stream
+text
+&lt;script&gt;window.alert(&#39;I&#39;m evil!&#39;);&lt;/script&gt;
+</pre>`)
+	actual := convertStreamOutput(testStreamOutputCodeInjection)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataHTMLOutput(t *testing.T) {
+func TestConvertStreamOutputMissingKey(t *testing.T) {
+	expected := template.HTML("")
+	actual := convertStreamOutput(testStreamOutputMissingKey)
+	assert.Equal(t, expected, actual)
+}
+
+func TestConvertDataOutputHTML(t *testing.T) {
 	expected := template.HTML(`<div>
 <p>Hello world</p>
 </div>`)
-	actual := convertDataOutput(testDisplayDataHTMLOutput)
+	actual := convertDataOutput(testHTMLOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataPDFOutput(t *testing.T) {
+func TestConvertDataOutputHTMLCodeInjection(t *testing.T) {
+	expected := template.HTML(`<div>
+<p>Hello world</p>
+</div>`)
+	actual := convertDataOutput(testHTMLOutputCodeInjection)
+	assert.Equal(t, expected, actual)
+}
+
+func TestConvertDataOutputPDF(t *testing.T) {
 	expected := template.HTML("<pre>PDF output</pre>")
-	actual := convertDataOutput(testDisplayDataPDFOutput)
+	actual := convertDataOutput(testPDFOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataLaTeXOutput(t *testing.T) {
+func TestConvertDataOutputLaTeX(t *testing.T) {
 	expected := template.HTML("<pre>LaTeX output</pre>")
-	actual := convertDataOutput(testDisplayDataLaTeXOutput)
+	actual := convertDataOutput(testLaTeXOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataSVGOutput(t *testing.T) {
-	expected := template.HTML(
-		`<svg id="star" xmlns="http://www.w3.org/2000/svg" width="255" height="240" viewBox="0 0 51 48">
-<path d="M25 1l6 17h18L35 29l5 17-15-10-15 10 5-17L1 18h18z"/>
-</svg>`,
-	)
-	actual := convertDataOutput(testDisplayDataSVGOutput)
+func TestConvertDataOutputSVG(t *testing.T) {
+	expected := template.HTML("<pre>SVG output</pre>")
+	actual := convertDataOutput(testSVGOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataPNGOutput(t *testing.T) {
-	expected := template.HTML(fmt.Sprintf(
-		`<img src="data:image/png;base64,%s">`,
-		*testDisplayDataPNGOutput.Data.ImagePNG,
-	))
-	actual := convertDataOutput(testDisplayDataPNGOutput)
+func TestConvertDataOutputPNG(t *testing.T) {
+	expected := template.HTML(fmt.Sprintf(`<img src="data:image/png;base64,%s">`, testPNGString))
+	actual := convertDataOutput(testPNGOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataJPEGOutput(t *testing.T) {
-	expected := template.HTML(fmt.Sprintf(
-		`<img src="data:image/jpeg;base64,%s">`,
-		*testDisplayDataJPEGOutput.Data.ImageJPEG,
-	))
-	actual := convertDataOutput(testDisplayDataJPEGOutput)
+func TestConvertDataOutputJPEG(t *testing.T) {
+	expected := template.HTML(fmt.Sprintf(`<img src="data:image/jpeg;base64,%s">`, testJPEGString))
+	actual := convertDataOutput(testJPEGOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataMarkdownOutput(t *testing.T) {
+func TestConvertDataOutputMarkdown(t *testing.T) {
 	expected := template.HTML(`<h1>Hello World</h1>
 
 <p>This is <strong>bold</strong> and <em>italic</em></p>
 `)
-	actual := convertDataOutput(testDisplayDataMarkdownOutput)
+	actual := convertDataOutput(testMarkdownOutput)
 	assert.Equal(t, expected, actual)
 }
 
-func TestConvertDataPlainTextOutput(t *testing.T) {
+func TestConvertDataOutputMarkdownCodeInjection(t *testing.T) {
+	expected := template.HTML(`<h1>Hello World</h1>
+
+<p>This is <strong>bold</strong> and <em>italic</em>
+</p>
+`)
+	actual := convertDataOutput(testMarkdownOutputCodeInjection)
+	assert.Equal(t, expected, actual)
+}
+
+func TestConvertDataOutputPlainText(t *testing.T) {
 	expected := template.HTML(`<pre>multiline
 text
 data</pre>`)
-	actual := convertDataOutput(testDisplayDataPlainTextOutput)
+	actual := convertDataOutput(testPlainTextOutput)
+	assert.Equal(t, expected, actual)
+}
+
+func TestConvertDataOutputPlainTextCodeInjection(t *testing.T) {
+	expected := template.HTML(`<pre>multiline
+text
+data
+&lt;script&gt;window.alert(&#39;I&#39;m evil!&#39;);&lt;/script&gt;
+</pre>`)
+	actual := convertDataOutput(testPlainTextOutputCodeInjection)
 	assert.Equal(t, expected, actual)
 }
 
@@ -98,6 +127,14 @@ func TestConvertErrorOutput(t *testing.T) {
 	expected := template.HTML(`<pre>Error message
 With <span class="term-fg31">ANSI colors</span></pre>`)
 	actual := convertErrorOutput(testErrorOutput)
+	assert.Equal(t, expected, actual)
+}
+
+func TestConvertErrorOutputCodeInjection(t *testing.T) {
+	expected := template.HTML(`<pre>Error message
+With <span class="term-fg31">ANSI colors</span>
+&lt;script&gt;window.alert(&#39;I&#39;m evil!&#39;);&lt;&#47;script&gt;</pre>`)
+	actual := convertErrorOutput(testErrorOutputCodeInjection)
 	assert.Equal(t, expected, actual)
 }
 
@@ -116,9 +153,25 @@ func TestConvertMarkdownCell(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestConvertMarkdownCellCodeInjection(t *testing.T) {
+	expected := template.HTML(`<h1>Hello World</h1>
+
+<p>This is <strong>bold</strong> and <em>italic</em>
+</p>
+`)
+	actual := convertMarkdownCell(testMarkdownCellCodeInjection)
+	assert.Equal(t, expected, actual)
+}
+
 func TestConvertCodeCell(t *testing.T) {
 	expected := template.HTML(`(?s)<pre class="chroma">.*print.*Hello.*print.*World.*</pre>`)
 	actual := convertCodeCell(testCodeCell, "py")
+	assert.Regexp(t, expected, actual)
+}
+
+func TestConvertCodeCellCodeInjection(t *testing.T) {
+	expected := template.HTML(`(?s)<pre class="chroma">.*print.*Hello.*print.*World.*</pre>`)
+	actual := convertCodeCell(testCodeCellCodeInjection, "py")
 	assert.Regexp(t, expected, actual)
 }
 
@@ -126,5 +179,13 @@ func TestConvertRawCell(t *testing.T) {
 	expected := template.HTML(`<pre>This is a raw section, without formatting.
 This is the second line.</pre>`)
 	actual := convertRawCell(testRawCell)
+	assert.Equal(t, expected, actual)
+}
+
+func TestConvertRawCellCodeInjection(t *testing.T) {
+	expected := template.HTML(`<pre>This is a raw section, without formatting.
+This is the second line.
+&lt;script&gt;window.alert(&#39;I&#39;m evil!&#39;);&lt;/script&gt;</pre>`)
+	actual := convertRawCell(testRawCellCodeInjection)
 	assert.Equal(t, expected, actual)
 }

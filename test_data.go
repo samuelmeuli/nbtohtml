@@ -81,13 +81,13 @@ const testNotebookString = `{
 				{
 					"output_type": "display_data",
 					"data": {
-						"image/png": "base64-encoded-png-data"
+						"image/png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
 					}
 				},
 				{
 					"output_type": "display_data",
 					"data": {
-						"image/jpeg": "base64-encoded-jpeg-data"
+						"image/jpeg": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
 					}
 				},
 				{
@@ -162,8 +162,18 @@ var testMarkdownCell = cell{
 		"This is **bold** and _italic_",
 	},
 }
+var testMarkdownCellCodeInjection = cell{
+	CellType: "markdown",
+	Source: []string{
+		"# Hello World",
+		"\n",
+		"This is **bold** and _italic_",
+		"\n",
+		"<script>window.alert('I'm evil!');</script>",
+	},
+}
 
-var testDisplayDataHTMLOutput = output{
+var testHTMLOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		TextHTML: []string{
@@ -173,9 +183,20 @@ var testDisplayDataHTMLOutput = output{
 		},
 	},
 }
+var testHTMLOutputCodeInjection = output{
+	OutputType: "display_data",
+	Data: outputData{
+		TextHTML: []string{
+			"<div>\n",
+			"<p>Hello world</p>\n",
+			"<script>window.alert('I'm evil!');</script>",
+			"</div>",
+		},
+	},
+}
 
 var testPDFString = "base64-encoded-pdf-data"
-var testDisplayDataPDFOutput = output{
+var testPDFOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		ApplicationPDF: &testPDFString,
@@ -183,14 +204,14 @@ var testDisplayDataPDFOutput = output{
 }
 
 var testLaTeXString = "latex-data"
-var testDisplayDataLaTeXOutput = output{
+var testLaTeXOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		TextLaTeX: &testLaTeXString,
 	},
 }
 
-var testDisplayDataSVGOutput = output{
+var testSVGOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		ImageSVGXML: []string{
@@ -201,23 +222,23 @@ var testDisplayDataSVGOutput = output{
 	},
 }
 
-var testPNGString = "base64-encoded-png-data"
-var testDisplayDataPNGOutput = output{
+var testPNGString = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+var testPNGOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		ImagePNG: &testPNGString,
 	},
 }
 
-var testJPEGString = "base64-encoded-jpeg-data"
-var testDisplayDataJPEGOutput = output{
+var testJPEGString = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+var testJPEGOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		ImageJPEG: &testJPEGString,
 	},
 }
 
-var testDisplayDataMarkdownOutput = output{
+var testMarkdownOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		TextMarkdown: []string{
@@ -227,14 +248,37 @@ var testDisplayDataMarkdownOutput = output{
 		},
 	},
 }
+var testMarkdownOutputCodeInjection = output{
+	OutputType: "display_data",
+	Data: outputData{
+		TextMarkdown: []string{
+			"# Hello World",
+			"\n",
+			"This is **bold** and _italic_",
+			"\n",
+			"<script>window.alert('I'm evil!');</script>",
+		},
+	},
+}
 
-var testDisplayDataPlainTextOutput = output{
+var testPlainTextOutput = output{
 	OutputType: "display_data",
 	Data: outputData{
 		TextPlain: []string{
 			"multiline\n",
 			"text\n",
 			"data",
+		},
+	},
+}
+var testPlainTextOutputCodeInjection = output{
+	OutputType: "display_data",
+	Data: outputData{
+		TextPlain: []string{
+			"multiline\n",
+			"text\n",
+			"data\n",
+			"<script>window.alert('I'm evil!');</script>\n",
 		},
 	},
 }
@@ -246,6 +290,14 @@ var testErrorOutput = output{
 		"With \u001b[0;31mANSI colors\u001b[0m",
 	},
 }
+var testErrorOutputCodeInjection = output{
+	OutputType: "error",
+	Traceback: []string{
+		"Error message",
+		"With \u001b[0;31mANSI colors\u001b[0m",
+		"<script>window.alert('I'm evil!');</script>",
+	},
+}
 
 var testStreamOutput = output{
 	OutputType: "stream",
@@ -254,6 +306,18 @@ var testStreamOutput = output{
 		"stream\n",
 		"text\n",
 	},
+}
+var testStreamOutputCodeInjection = output{
+	OutputType: "stream",
+	Text: []string{
+		"multiline\n",
+		"stream\n",
+		"text\n",
+		"<script>window.alert('I'm evil!');</script>\n",
+	},
+}
+var testStreamOutputMissingKey = output{
+	OutputType: "stream",
 }
 
 var testExecutionCount1 = 1
@@ -270,6 +334,19 @@ var testExecuteResultOutput = output{
 }
 
 var testExecutionCount2 = 2
+var testCodeCellOutputs = []output{
+	testHTMLOutput,
+	testPDFOutput,
+	testLaTeXOutput,
+	testSVGOutput,
+	testPNGOutput,
+	testJPEGOutput,
+	testMarkdownOutput,
+	testPlainTextOutput,
+	testErrorOutput,
+	testExecuteResultOutput,
+	testStreamOutput,
+}
 var testCodeCell = cell{
 	CellType:       "code",
 	ExecutionCount: &testExecutionCount2,
@@ -277,19 +354,17 @@ var testCodeCell = cell{
 		"print(\"Hello\")\n",
 		"print(\"World\")",
 	},
-	Outputs: []output{
-		testDisplayDataHTMLOutput,
-		testDisplayDataPDFOutput,
-		testDisplayDataLaTeXOutput,
-		testDisplayDataSVGOutput,
-		testDisplayDataPNGOutput,
-		testDisplayDataJPEGOutput,
-		testDisplayDataMarkdownOutput,
-		testDisplayDataPlainTextOutput,
-		testErrorOutput,
-		testExecuteResultOutput,
-		testStreamOutput,
+	Outputs: testCodeCellOutputs,
+}
+var testCodeCellCodeInjection = cell{
+	CellType:       "code",
+	ExecutionCount: &testExecutionCount2,
+	Source: []string{
+		"print(\"Hello\")\n",
+		"print(\"World\")\n",
+		"<script>window.alert('I'm evil!');</script>",
 	},
+	Outputs: testCodeCellOutputs,
 }
 
 var testRawCell = cell{
@@ -297,6 +372,14 @@ var testRawCell = cell{
 	Source: []string{
 		"This is a raw section, without formatting.\n",
 		"This is the second line.",
+	},
+}
+var testRawCellCodeInjection = cell{
+	CellType: "raw",
+	Source: []string{
+		"This is a raw section, without formatting.\n",
+		"This is the second line.\n",
+		"<script>window.alert('I'm evil!');</script>",
 	},
 }
 
