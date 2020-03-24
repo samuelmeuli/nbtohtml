@@ -54,9 +54,10 @@ type metadata struct {
 
 // notebook represents the JSON data structure in which a Jupyter Notebook is stored.
 type notebook struct {
-	Cells    []cell   `json:"cells"`
-	Metadata metadata `json:"metadata"`
-	// Omitted fields: "nbformat", "nbformat_minor"
+	Cells         []cell   `json:"cells"`
+	Metadata      metadata `json:"metadata"`
+	NBFormat      int      `json:"nbformat"`
+	NBFormatMinor int      `json:"nbformat_minor"`
 }
 
 // parseNotebook takes the provided Jupyter Notebook JSON string and parses it into the

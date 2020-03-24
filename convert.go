@@ -181,6 +181,12 @@ func ConvertString(writer io.Writer, notebookString string) error {
 		return err
 	}
 
+	if notebook.NBFormat < 4 {
+		return fmt.Errorf(
+			"the provided Jupyter Notebook uses an old version of the Notebook file format (version 4 or higher is required)",
+		)
+	}
+
 	// Get format extension of Jupyter Kernel language (e.g. "py")
 	fileExtension := notebook.Metadata.LanguageInfo.FileExtension[1:]
 

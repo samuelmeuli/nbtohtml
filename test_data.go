@@ -395,5 +395,7 @@ var testParsedNotebook = notebook{
 		testCodeCell,
 		testRawCell,
 	},
-	Metadata: testMetadata,
+	Metadata:      testMetadata,
+	NBFormat:      4,
+	NBFormatMinor: 4,
 }
