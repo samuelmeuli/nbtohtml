@@ -1,7 +1,6 @@
 package nbtohtml
 
-// Documentation of the Jupyter Notebook JSON format: https://ipython.org/ipython-doc/3/notebook/nbformat.html
-// (VCS: https://github.com/ipython/ipython-doc/blob/e9c83570cf3dea6d7a6b178ee59869b4f441220f/3/notebook/nbformat.html)
+// Source of sample notebook (modified): https://ipython.org/ipython-doc/3/notebook/nbformat.html
 const testNotebookString = `{
 	"metadata": {
 		"kernelspec": {
