@@ -383,9 +383,18 @@ var testRawCellCodeInjection = cell{
 	},
 }
 
+var testFileExtension = ".py"
+var testKernelLanguage = "python"
+var testKernelDisplayName = "Python 3"
+var testKernelName = "python3"
 var testMetadata = metadata{
 	LanguageInfo: languageInfo{
-		FileExtension: ".py",
+		FileExtension: &testFileExtension,
+	},
+	KernelSpec: kernelSpec{
+		DisplayName: &testKernelDisplayName,
+		Language:    &testKernelLanguage,
+		Name:        &testKernelName,
 	},
 }
 

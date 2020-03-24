@@ -84,9 +84,9 @@ func convertMarkdownCell(cell cell) template.HTML {
 }
 
 // convertCodeCell converts a code cell to HTML with classes for syntax highlighting.
-func convertCodeCell(cell cell, fileExtension string) template.HTML {
+func convertCodeCell(cell cell, languageID string) template.HTML {
 	sourceString := strings.Join(cell.Source, "")
-	cellHTML, err := renderSourceCode(sourceString, fileExtension)
+	cellHTML, err := renderSourceCode(sourceString, languageID)
 
 	// Render code without syntax highlighting if an error occurred
 	if err != nil {
@@ -116,12 +116,12 @@ func convertPrompt(executionCount *int) template.HTML {
 }
 
 // convertOutput converts the provided cell input to HTML.
-func convertInput(fileExtension string, cell cell) template.HTML {
+func convertInput(languageID string, cell cell) template.HTML {
 	switch cell.CellType {
 	case "markdown":
 		return convertMarkdownCell(cell)
 	case "code":
-		return convertCodeCell(cell, fileExtension)
+		return convertCodeCell(cell, languageID)
 	case "raw":
 		return convertRawCell(cell)
 	default:
@@ -187,8 +187,16 @@ func ConvertString(writer io.Writer, notebookString string) error {
 		)
 	}
 
-	// Get format extension of Jupyter Kernel language (e.g. "py")
-	fileExtension := notebook.Metadata.LanguageInfo.FileExtension[1:]
+	// Try to find information about programming language used by the notebook kernel. Metadata fields
+	// in the Jupyter Notebook JSON are optional, so multiple fields are checked
+	languageID := ""
+	if fileExtensionPtr := notebook.Metadata.LanguageInfo.FileExtension; fileExtensionPtr != nil {
+		languageID = (*fileExtensionPtr)[1:]
+	} else if kernelLanguagePtr := notebook.Metadata.KernelSpec.Language; kernelLanguagePtr != nil {
+		languageID = *kernelLanguagePtr
+	} else if kernelNamePtr := notebook.Metadata.KernelSpec.Name; kernelNamePtr != nil {
+		languageID = *kernelNamePtr
+	}
 
 	t := template.New("notebook")
 	t = t.Funcs(template.FuncMap{
@@ -205,7 +213,7 @@ func ConvertString(writer io.Writer, notebookString string) error {
 	})
 	t, err = t.Parse(`
 		<div class="notebook">
-			{{ $fileExtension := .fileExtension }}
+			{{ $languageID := .languageID }}
 			{{ range .notebook.Cells }}
 				<div class="{{ . | getCellClasses }}">
 					<div class="input-wrapper">
@@ -213,7 +221,7 @@ func ConvertString(writer io.Writer, notebookString string) error {
 							{{ .ExecutionCount | convertPrompt }}
 						</div>
 						<div class="input">
-							{{ . | convertInput $fileExtension }}
+							{{ . | convertInput $languageID }}
 						</div>
 					</div>
 					{{ range .Outputs }}
@@ -235,8 +243,8 @@ func ConvertString(writer io.Writer, notebookString string) error {
 	}
 
 	templateVars := map[string]interface{}{
-		"fileExtension": fileExtension,
-		"notebook":      notebook,
+		"languageID": languageID,
+		"notebook":   notebook,
 	}
 	return t.Execute(writer, templateVars)
 }

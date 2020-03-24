@@ -41,15 +41,22 @@ type cell struct {
 
 // languageInfo provides details about the programming language of the Jupyter Notebook kernel.
 type languageInfo struct {
-	FileExtension string `json:"file_extension"`
-	// Omitted fields: codemirror_mode", "mimetype", "name", "nbconvert_exporter", "pygments_lexer",
+	FileExtension *string `json:"file_extension,omitempty"`
+	// Omitted fields: "codemirror_mode", "mimetype", "name", "nbconvert_exporter", "pygments_lexer",
 	// "version"
+}
+
+// kernelSpec provides details about the Jupyter Notebook kernel.
+type kernelSpec struct {
+	DisplayName *string `json:"display_name,omitempty"`
+	Language    *string `json:"language,omitempty"`
+	Name        *string `json:"name,omitempty"`
 }
 
 // metadata contains additional information about the Jupyter Notebook.
 type metadata struct {
 	LanguageInfo languageInfo `json:"language_info"`
-	// Omitted fields: "kernelspec"
+	KernelSpec   kernelSpec   `json:"kernelspec"`
 }
 
 // notebook represents the JSON data structure in which a Jupyter Notebook is stored.

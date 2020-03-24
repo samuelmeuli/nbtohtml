@@ -24,11 +24,14 @@ func renderMarkdown(markdownLines []string) template.HTML {
 // renderSourceCode uses the Chroma library to convert the provided source code string to HTML.
 // Instead of inline styles, HTML classes are used for syntax highlighting, which allows the users
 // to style source code according to their needs.
-func renderSourceCode(source string, fileExtension string) (template.HTML, error) {
+func renderSourceCode(source string, languageID string) (template.HTML, error) {
 	sourceBuffer := new(bytes.Buffer)
 
-	// Set up lexer for file extension
-	l := lexers.Get(fileExtension)
+	// Set up lexer for programming language
+	var l chroma.Lexer
+	if languageID != "" {
+		l = lexers.Get(languageID)
+	}
 	if l == nil {
 		l = lexers.Analyse(source)
 	}
