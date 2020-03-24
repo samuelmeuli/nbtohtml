@@ -35,17 +35,17 @@ func TestConvertStreamOutputMissingKey(t *testing.T) {
 }
 
 func TestConvertDataOutputHTML(t *testing.T) {
-	expected := template.HTML(`<div>
+	expected := template.HTML(`
 <p>Hello world</p>
-</div>`)
+`)
 	actual := convertDataOutput(testHTMLOutput)
 	assert.Equal(t, expected, actual)
 }
 
 func TestConvertDataOutputHTMLCodeInjection(t *testing.T) {
-	expected := template.HTML(`<div>
+	expected := template.HTML(`
 <p>Hello world</p>
-</div>`)
+`)
 	actual := convertDataOutput(testHTMLOutputCodeInjection)
 	assert.Equal(t, expected, actual)
 }

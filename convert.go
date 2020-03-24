@@ -19,6 +19,10 @@ func convertDataOutput(output output) template.HTML {
 	switch {
 	case output.Data.TextHTML != nil:
 		htmlString := strings.Join(output.Data.TextHTML, "")
+		// Remove unnecessary wrapper <div>
+		if strings.HasPrefix(htmlString, "<div>") && strings.HasSuffix(htmlString, "</div>") {
+			htmlString = htmlString[5 : len(htmlString)-6]
+		}
 		outputHTML = sanitizeHTML(htmlString)
 	case output.Data.ApplicationPDF != nil:
 		// TODO: Implement PDF conversion
@@ -29,7 +33,7 @@ func convertDataOutput(output output) template.HTML {
 		fmt.Printf("missing conversion logic for `text/latex` data type\n")
 		outputHTML = "<pre>LaTeX output</pre>"
 	case output.Data.ImageSVGXML != nil:
-		// TODO: Implement LaTeX conversion
+		// TODO: Implement SVG conversion
 		fmt.Printf("missing conversion logic for `image/svg+xml` data type\n")
 		outputHTML = "<pre>SVG output</pre>"
 	case output.Data.ImagePNG != nil:
