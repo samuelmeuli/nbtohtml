@@ -38,6 +38,10 @@
 	margin: 0 0 0.8em;
 }
 
+.notebook img {
+	max-width: 100%;
+}
+
 .notebook pre {
 	margin: 0;
 }
