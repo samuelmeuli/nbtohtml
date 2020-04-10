@@ -1,10 +1,12 @@
 name: Lint
 
-on: push
+on:
+  - pull_request
+  - push
 
 jobs:
-  run-linters:
-    name: Run linters
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -16,5 +18,5 @@ jobs:
         with:
           go-version: 1.14
 
-      - name: Run golangci-lint
+      - name: Lint
         run: docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.24.0 golangci-lint run
