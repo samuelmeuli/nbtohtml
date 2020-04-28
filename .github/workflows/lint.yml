@@ -1,8 +1,8 @@
 name: Lint
 
 on:
-  - pull_request
   - push
+  - pull_request
 
 jobs:
   lint:
@@ -27,5 +27,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-mod-
 
-      - name: Lint
+      - name: Run linters
         run: docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.25.1 golangci-lint run

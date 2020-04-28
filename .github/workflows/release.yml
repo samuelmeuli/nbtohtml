@@ -7,10 +7,11 @@ on:
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Check out Git repository
         uses: actions/checkout@v2
 
       - name: Unshallow
