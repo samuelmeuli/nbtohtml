@@ -11,21 +11,25 @@ import (
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 	"github.com/buildkite/terminal-to-html"
-	"gopkg.in/russross/blackfriday.v2"
+	"github.com/yuin/goldmark"
 )
 
-// renderMarkdown uses the Blackfriday library to convert the provided Markdown lines to HTML.
-func renderMarkdown(markdownLines []string) template.HTML {
-	markdownString := strings.Join(markdownLines, "")
-	htmlString := string(blackfriday.Run([]byte(markdownString)))
-	return sanitizeHTML(htmlString)
+// renderMarkdown uses the goldmark library to convert the provided Markdown lines to HTML.
+func renderMarkdown(markdown string) template.HTML {
+	var htmlBuffer bytes.Buffer
+	if err := goldmark.Convert([]byte(markdown), &htmlBuffer); err != nil {
+		panic(err)
+	}
+	// goldmark does not render raw HTML or potentially-dangerous URLs, so HTML should be safe from
+	// code injection
+	return template.HTML(htmlBuffer.String()) // nolint:gosec
 }
 
 // renderSourceCode uses the Chroma library to convert the provided source code string to HTML.
 // Instead of inline styles, HTML classes are used for syntax highlighting, which allows the users
 // to style source code according to their needs.
 func renderSourceCode(source string, languageID string) (template.HTML, error) {
-	sourceBuffer := new(bytes.Buffer)
+	htmlBuffer := new(bytes.Buffer)
 
 	// Set up lexer for programming language
 	var l chroma.Lexer
@@ -48,13 +52,13 @@ func renderSourceCode(source string, languageID string) (template.HTML, error) {
 		return "", fmt.Errorf("could not render source code (tokenization error): %d", err)
 	}
 
-	err = formatter.Format(sourceBuffer, styles.GitHub, iterator)
+	err = formatter.Format(htmlBuffer, styles.GitHub, iterator)
 	if err != nil {
 		return "", fmt.Errorf("could not render source code (formatting error): %d", err)
 	}
 
 	// Chroma escapes tags, so HTML should be safe from code injection
-	return template.HTML(sourceBuffer.String()), nil // nolint:gosec
+	return template.HTML(htmlBuffer.String()), nil // nolint:gosec
 }
 
 // renderMarkdown uses the `terminal-to-html` library to convert the provided Terminal output to

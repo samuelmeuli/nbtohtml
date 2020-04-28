@@ -82,7 +82,6 @@ func TestConvertDataOutputJPEG(t *testing.T) {
 
 func TestConvertDataOutputMarkdown(t *testing.T) {
 	expected := template.HTML(`<h1>Hello World</h1>
-
 <p>This is <strong>bold</strong> and <em>italic</em></p>
 `)
 	actual := convertDataOutput(testMarkdownOutput)
@@ -91,9 +90,8 @@ func TestConvertDataOutputMarkdown(t *testing.T) {
 
 func TestConvertDataOutputMarkdownCodeInjection(t *testing.T) {
 	expected := template.HTML(`<h1>Hello World</h1>
-
-<p>This is <strong>bold</strong> and <em>italic</em>
-</p>
+<p>This is <strong>bold</strong> and <em>italic</em></p>
+<!-- raw HTML omitted -->
 `)
 	actual := convertDataOutput(testMarkdownOutputCodeInjection)
 	assert.Equal(t, expected, actual)
@@ -146,7 +144,6 @@ func TestConvertErrorOutputMissingKey(t *testing.T) {
 
 func TestConvertMarkdownCell(t *testing.T) {
 	expected := template.HTML(`<h1>Hello World</h1>
-
 <p>This is <strong>bold</strong> and <em>italic</em></p>
 `)
 	actual := convertMarkdownCell(testMarkdownCell)
@@ -155,9 +152,8 @@ func TestConvertMarkdownCell(t *testing.T) {
 
 func TestConvertMarkdownCellCodeInjection(t *testing.T) {
 	expected := template.HTML(`<h1>Hello World</h1>
-
-<p>This is <strong>bold</strong> and <em>italic</em>
-</p>
+<p>This is <strong>bold</strong> and <em>italic</em></p>
+<!-- raw HTML omitted -->
 `)
 	actual := convertMarkdownCell(testMarkdownCellCodeInjection)
 	assert.Equal(t, expected, actual)

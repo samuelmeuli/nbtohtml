@@ -43,7 +43,7 @@ func convertDataOutput(output output) template.HTML {
 		htmlString := fmt.Sprintf(`<img src="data:image/jpeg;base64,%s">`, *output.Data.ImageJPEG)
 		outputHTML = sanitizeHTML(htmlString)
 	case output.Data.TextMarkdown != nil:
-		outputHTML = renderMarkdown(output.Data.TextMarkdown)
+		outputHTML = renderMarkdown(strings.Join(output.Data.TextMarkdown, ""))
 	case output.Data.TextPlain != nil:
 		escapedHTML := escapeHTML(strings.Join(output.Data.TextPlain, ""))
 		outputHTML = "<pre>" + escapedHTML + "</pre>"
@@ -80,7 +80,7 @@ func convertStreamOutput(output output) template.HTML {
 
 // convertMarkdownCell converts a Markdown cell to HTML.
 func convertMarkdownCell(cell cell) template.HTML {
-	return renderMarkdown(cell.Source)
+	return renderMarkdown(strings.Join(cell.Source, ""))
 }
 
 // convertCodeCell converts a code cell to HTML with classes for syntax highlighting.
