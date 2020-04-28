@@ -13,11 +13,13 @@ import (
 	"github.com/buildkite/terminal-to-html"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
+	"github.com/yuin/goldmark/extension"
 )
 
 // Enable syntax highlighting in Markdown
 var markdownParser = goldmark.New(
 	goldmark.WithExtensions(
+		extension.GFM,
 		highlighting.NewHighlighting(
 			highlighting.WithFormatOptions(
 				htmlFormatter.WithClasses(true),
