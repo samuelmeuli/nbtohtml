@@ -12,12 +12,24 @@ import (
 	"github.com/alecthomas/chroma/styles"
 	"github.com/buildkite/terminal-to-html"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
+)
+
+// Enable syntax highlighting in Markdown
+var markdownParser = goldmark.New(
+	goldmark.WithExtensions(
+		highlighting.NewHighlighting(
+			highlighting.WithFormatOptions(
+				htmlFormatter.WithClasses(true),
+			),
+		),
+	),
 )
 
 // renderMarkdown uses the goldmark library to convert the provided Markdown lines to HTML.
 func renderMarkdown(markdown string) template.HTML {
 	var htmlBuffer bytes.Buffer
-	if err := goldmark.Convert([]byte(markdown), &htmlBuffer); err != nil {
+	if err := markdownParser.Convert([]byte(markdown), &htmlBuffer); err != nil {
 		panic(err)
 	}
 	// goldmark does not render raw HTML or potentially-dangerous URLs, so HTML should be safe from
