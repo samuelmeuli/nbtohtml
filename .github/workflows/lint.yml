@@ -28,4 +28,4 @@ jobs:
             ${{ runner.os }}-go-mod-
 
       - name: Lint
-        run: docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.24.0 golangci-lint run
+        run: docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.25.1 golangci-lint run

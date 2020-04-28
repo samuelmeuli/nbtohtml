@@ -9,6 +9,7 @@ linters:
     - gocognit
     - gomnd
     - maligned
+    - testpackage
     - wsl
 
 linters-settings:
